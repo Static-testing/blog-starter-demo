@@ -1,0 +1,272 @@
+# The stackbit.yaml file lets you define the characteristic of your website
+# needed to make your theme, or project, work with Stackbit. For more info about
+# stackbit.yaml configuration visit https://www.stackbit.com/docs/stackbit-yaml/
+stackbitVersion: ~0.3.0
+ssgName: nextjs
+cmsName: git
+
+# The "buildCommand" and the "publishDir" properties are used to configure the
+# serverless deployment platform when Stackbit creates a new site from this theme.
+buildCommand: npm run build
+publishDir: out
+
+# assets define how assets are referenced by static site generator
+# for more info about assets visit: https://www.stackbit.com/docs/stackbit-yaml/assets/
+assets:
+  referenceType: static
+  staticDir: public
+  uploadDir: images
+  publicPath: /
+
+# dataDir defines the folder for files described by models of type 'data'.
+# The model properties 'folder', 'match' and 'exclude' should be relative to dataDir
+dataDir: content/data
+
+# pagesDir defines the folder for files described by models of type 'page'.
+# The model properties 'folder', 'match' and 'exclude' should be relative to dataDir
+pagesDir: content/pages
+
+# pageLayoutKey is additional filtering property that specifies which page field
+# should be used to match a page to a model, by model name, in case when pages
+# belonging to different models are located in the same folder
+pageLayoutKey: layout
+
+# These are the models of the website
+# for more info about models visit: https://www.stackbit.com/docs/stackbit-yaml/models/
+models:
+  config:
+    type: data
+    label: Site Configuration
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: Site title
+        required: true
+      - type: string
+        name: path_prefix
+        label: Base URL
+        description: >-
+          The base URL of this site. Useful for sites hosted under specific
+          path, e.g.: https://www.example.com/my-site/
+        required: true
+        hidden: true
+      - type: string
+        name: domain
+        label: Domain
+        description: >-
+          The domain of your site, including the protocol, e.g.
+          https://www.example.com/
+      - type: image
+        name: favicon
+        label: Favicon
+        description: A square icon that represents your website
+      - type: enum
+        name: palette
+        label: Color Palette
+        description: The color palette used for the site.
+        options:
+          - blue
+          - green
+        default: blue
+      - type: model
+        name: header
+        label: Header Configuration
+        models:
+          - header
+      - type: model
+        name: footer
+        label: Footer Configuration
+        models:
+          - footer
+    file: config.json
+  header:
+    type: object
+    label: Header Configuration
+    labelField: title
+    fields:
+      - type: string
+        name: title
+        label: Header Title
+        description: The title displayed in the header if no logo image added.
+      - type: image
+        name: logo_img
+        label: Logo
+        description: The logo image displayed in the header.
+      - type: string
+        name: logo_img_alt
+        label: Logo Alt Text
+        description: The alt text of the logo image.
+      - type: boolean
+        name: has_nav
+        label: Enable Navigation Menu
+        description: Display the navigation menu bar in the header.
+        default: true
+      - type: list
+        name: nav_links
+        label: Navigation Links
+        description: List of navigation links.
+  footer:
+    type: object
+    label: Footer Configuration
+    labelField: content
+    fields:
+      - type: string
+        name: content
+        label: Footer Content
+        description: The copyright text displayed in the footer.
+      - type: list
+        name: links
+        label: Links
+        description: List of links in the footer.
+        items:
+          type: model
+          models:
+            - action
+  home:
+    type: page
+    urlPath: /
+    label: Home
+    layout: home
+    file: index.md
+    hideContent: true
+    singleInstance: true
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: >-
+          The title of the page. If value is not set, the author name will be
+          used.
+        required: true
+      - type: boolean
+        name: has_intro
+        label: Enable Intro Section
+        description: Display the intro section below the site header.
+        default: true
+      - type: markdown
+        name: intro_content
+        label: Intro Section Content
+        description: The text content of the intro section.
+      - type: list
+        name: intro_actions
+        label: Intro Action Buttons
+        items:
+          type: model
+          models:
+            - action
+      - type: model
+        name: seo
+        models:
+          - stackbit_page_meta
+  page:
+    type: page
+    label: Page
+    layout: page
+    exclude: posts/**
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: The title of the page.
+        required: true
+      - type: model
+        name: seo
+        models:
+          - stackbit_page_meta
+  post:
+    type: page
+    urlPath: '/posts/{slug}'
+    label: Post
+    layout: post
+    folder: posts
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: The title of the post.
+        required: true
+      - type: string
+        name: subtitle
+        label: Subtitle
+        description: The text shown just below the post title.
+      - type: date
+        name: date
+        label: Date
+        required: true
+      - type: model
+        name: seo
+        models:
+          - stackbit_page_meta
+  action:
+    type: object
+    label: Action
+    labelField: label
+    fields:
+      - type: string
+        name: label
+        label: Label
+        required: true
+      - type: string
+        name: url
+        label: URL
+        required: true
+        default: '#'
+      - type: enum
+        name: style
+        label: Style
+        options:
+          - link
+          - button
+        default: link
+        required: true
+  stackbit_page_meta:
+    type: object
+    label: Page meta data
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: The page title that goes into the <title> tag
+        default: ''
+      - type: string
+        name: description
+        label: Description
+        description: The page description that goes into the <meta name="description"> tag
+        default: ''
+      - type: list
+        name: robots
+        label: Robots
+        description: The items that go into the <meta name="robots"> tag
+        items:
+          type: enum
+          options:
+            - all
+            - index
+            - follow
+            - noindex
+            - nofollow
+            - noimageindex
+            - notranslate
+            - none
+      - type: list
+        name: extra
+        label: Extra
+        description: >-
+          Additional definition for specific meta tags such as open-graph,
+          twitter, etc.
+        items:
+          type: object
+          labelField: name
+          fields:
+            - type: string
+              name: name
+              default: ''
+            - type: string
+              name: value
+              default: ''
+            - type: string
+              name: keyName
+              default: name
+            - type: boolean
+              name: relativeUrl

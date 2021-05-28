@@ -1,5 +1,5 @@
 ---
-title: Fox Village In Japan
+title: Post Two
 date: '2021-01-11'
 seo:
   title: Fox Village In Japan

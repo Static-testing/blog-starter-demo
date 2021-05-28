@@ -1,5 +1,5 @@
 ---
-title: Post With Image
+title: Post One
 date: '2021-01-09'
 seo:
   title: Post With Image
@@ -12,8 +12,7 @@ seo:
       value: Post With Image
       keyName: property
     - name: 'og:description'
-      value: >-
-        Post with text and image
+      value: Post with text and image
       keyName: property
     - name: 'og:image'
       value: images/7.jpg
@@ -24,8 +23,7 @@ seo:
     - name: 'twitter:title'
       value: Post With Image
     - name: 'twitter:description'
-      value: >-
-        Post with text and image
+      value: Post with text and image
     - name: 'twitter:image'
       value: images/7.jpg
       relativeUrl: true

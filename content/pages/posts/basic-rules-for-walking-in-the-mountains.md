@@ -1,5 +1,5 @@
 ---
-title: Basic Rules For Walking In The Mountains
+title: 'Post '
 date: '2021-04-07'
 seo:
   title: Basic Rules For Walking In The Mountains
